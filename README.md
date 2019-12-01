@@ -1,5 +1,5 @@
 <h1 align="center">Diamonds regression model</h1>
-<h4 align="center">Regression model for predicting the prices diamonds </h4>
+<h4 align="center">Regression model for predicting the prices of diamonds </h4>
 
 <p align="center">
   <img alt="UPM" src="https://img.shields.io/badge/EIT%20Digital-UPM-blue?style=flat-square">
