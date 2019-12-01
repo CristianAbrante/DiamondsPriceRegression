@@ -1,0 +1,83 @@
+\documentclass[a4paper, 9pt]{article}
+\usepackage{geometry}
+%% \input{configuracion}
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{lscape}
+\usepackage{float}
+\usepackage{changepage}
+\usepackage{capt-of}
+\usepackage{wrapfig}
+
+\begin{document}
+
+\input{portada.tex}
+
+\newgeometry{textwidth=18cm,textheight=27cm}
+
+\section{Descripción del conjunto de datos}
+\label{sec:descripcion-datos}
+\noindent
+
+El conjunto de datos que estudiaremos se trata de una lista de 308 piedras preciosas. Este conjunto de datos se ha creado con fines educativos e incluye las siguientes variables:
+
+\begin{itemize}
+    \item \texttt{caratage}: Esta variable numérica continua se refiere a los quilates que posee el diamante, unidad de medida utilizada para pesar gemas y otras piedras preciosas. La correspondencia es de 1 quilate con 0.2 gramos.
+    \item \texttt{purity}: Nivel de pureza del color del diamante. Varía desde el nivel \textbf{D} hasta el \textbf{I}, donde el \textbf{D} se corresponde con el nivel más puro.
+    \item \texttt{clarity}: Nivel de claridad del diamante. Se corresponde con los valores: \textbf{IF, VVS1, VVS2, VS1, VS2}, ordenados de mejor a peor.
+    \item \texttt{certificate}: Certificado de calidad emitido por una institución de renombre. Puede tener los siguientes valores: \textbf{GIA, IGI y HRD}.
+    \item \texttt{price}: Precio que tiene el diamante, expresado en dólares de Singapur.
+\end{itemize}
+
+\section{Preguntas de investigación}
+\noindent
+El objetivo de esta investigación es dar respuesta al conjunto de preguntas formuladas aplicando diferentes técnicas de visualización y transformación de datos.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%   Pregunta 1
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Representa la gráfica \texttt{price} vs. \texttt{caratage} y la gráfica \texttt{log(price)} vs \texttt{caratage}. Decide que variable de respuesta es mejor utilizar.}
+\label{subsec:question-1}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%   Pregunta 2
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Encuentra una manera adecuada de incluir, además de \texttt{caratage}, la otra información categórica disponible: \texttt{clarity}, \texttt{color} y \texttt{certificate}. Comenta el modelo que se ha ajustado, realizando un análisis básico de los residuos.}
+\label{subsec:question-2}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%   Pregunta 3
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Crea dos acciones para remediar el resultado anterior}
+\label{subsec:question-3}
+
+\subsubsection{Crea una nueva variable categórica para segregar las piedras de acuerdo al valor de \texttt{caratage}.}
+
+\subsubsection{Añade el cuadrado de \texttt{caratage} como una nueva variable explicatoria.}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%   Pregunta 4
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{¿Cuál de las acciones anteriores prefieres y por qué? Justifica la respuesta en términos de interpretabilidad y validez de los supuestos.}
+\label{subsec:question-4}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{thebibliography}{9}
+\bibitem{bortner1969short}
+    Journal of chronic diseases (Bortner, Rayman W)
+    \newblock {\em A short rating scale as a potential measure of pattern A behavior}, 1969.
+
+\end{thebibliography}
+
+\end{document}
+
+
+
