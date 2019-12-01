@@ -1,4 +1,4 @@
-<h1 align="center">Diamonds regression model</h1>
+<h1 align="center">Diamonds price regression</h1>
 <h4 align="center">Regression model for predicting the prices of diamonds </h4>
 
 <p align="center">
