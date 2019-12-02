@@ -89,7 +89,7 @@ residualPlots(lm.1)
 # Question 3
 ##########################################################################
 
-# 3.1
+# 3.a
 
 diamonds$caratageCategorical <- ifelse(diamonds$caratage<0.5, "small", ifelse(diamonds$caratage<1, "medium", "large"))
 
@@ -104,9 +104,13 @@ summary(update1)
 # clarityIF                           1751.03
 
 #3.b Include the square of carat as a new explanatory variable. It avoids the subjectivity of clusters denition.
-update1=update(update1,.~.+l(caratage^2), diamonds)
-summary(update1)
+update2=update(Full,.~.+I(caratage^2), diamonds)
+summary(update2)
 
 ##########################################################################
 # Question 4
 ##########################################################################
+
+anova(update1,update2)
+
+
