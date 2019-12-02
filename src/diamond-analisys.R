@@ -45,9 +45,9 @@ ggplot(aes(x = log(price), y = caratage), data = diamonds) +
 # Question 2
 ##########################################################################
 
-contrasts(diamonds$colour_purity)
+contrasts(diamonds$purity)
 diamonds <- diamonds %>%
-  mutate(colour_purity = relevel(colour_purity, ref = "I"))
+  mutate(purity = relevel(purity, ref = "I"))
 
 contrasts(diamonds$clarity)
 diamonds <- diamonds %>%
@@ -58,7 +58,7 @@ diamonds <- diamonds %>%
   mutate(certificate = relevel(certificate, ref = "HRD"))
 
 #create general model with all variables
-Full<-lm(price~caratage + colour_purity + clarity + certificate, 
+Full<-lm(price~caratage + purity + clarity + certificate, 
          data=diamonds, x=TRUE, y=TRUE)
 summary(Full)
 attributes(Full)
@@ -89,6 +89,23 @@ residualPlots(lm.1)
 # Question 3
 ##########################################################################
 
+# 3.1
+
+diamonds$caratageCategorical <- ifelse(diamonds$caratage<0.5, "small", ifelse(diamonds$caratage<1, "medium", "large"))
+
+diamonds$caratageCategorical <- factor(diamonds$caratageCategorical, levels = c("small", "medium", "large"))
+
+update1=update(Full,.~.+caratage*caratageCategorical, diamonds)
+summary(update1)
+
+
+# Which is more highly valued: colour or clarity? 
+# purityD                             3180.57
+# clarityIF                           1751.03
+
+#3.b Include the square of carat as a new explanatory variable. It avoids the subjectivity of clusters denition.
+update1=update(update1,.~.+l(caratage^2), diamonds)
+summary(update1)
 
 ##########################################################################
 # Question 4
