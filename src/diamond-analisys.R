@@ -48,8 +48,12 @@ names(diamonds) <-
 ggplot(aes(x = price, y = caratage), data = diamonds) +
   geom_point()
 
+ggplot(aes(x = price), data = diamonds) + geom_histogram()
+
 ggplot(aes(x = log(price), y = caratage), data = diamonds) +
   geom_point()
+
+ggplot(aes(x = log(price)), data = diamonds) + geom_histogram() + geom_density(alpha=0.2)
 
 ##########################################################################
 # Question 2
