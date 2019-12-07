@@ -3,7 +3,7 @@
 %% \input{configuracion}
 \usepackage[utf8]{inputenc}
 \usepackage{amssymb}
-\usepackage{graphicx}
+\usepackage{graphicx, wrapfig, subcaption, setspace, booktabs}
 \usepackage{lscape}
 \usepackage{float}
 \usepackage{changepage}
@@ -40,7 +40,21 @@ El objetivo de esta investigación es dar respuesta al conjunto de preguntas for
 \subsection{Representa la gráfica \texttt{price} vs. \texttt{caratage} y la gráfica \texttt{log(price)} vs \texttt{caratage}. Decide que variable de respuesta es mejor utilizar.}
 \label{subsec:question-1}
 
-En primer lugar, representaremos las dos gráficas
+En primer lugar, representaremos las dos gráficas:
+
+\begin{figure}[h!]
+  \centering
+  \begin{subfigure}[b]{0.4\linewidth}
+    \includegraphics[width=\linewidth]{report/images/question-1/price.png}
+    \caption{\texttt{price} vs \texttt{caratage}}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.4\linewidth}
+    \includegraphics[width=\linewidth]{report/images/question-1/log(price).png}
+    \caption{\texttt{log(price)} vs \texttt{caratage}}
+  \end{subfigure}
+  \caption{Gráficas para \texttt{price} y \texttt{caratage}}
+  \label{fig:coffee}
+\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %   Pregunta 2
@@ -55,10 +69,49 @@ En primer lugar, representaremos las dos gráficas
 \subsection{Crea dos acciones para remediar el resultado anterior}
 \label{subsec:question-3}
 
-\subsubsection{Crea una nueva variable categórica para segregar las piedras de acuerdo al valor de \texttt{caratage}.}
+\subsubsection{Crear una nueva variable categórica para segregar las piedras según caratage: digamos menos de 0,5 quilates small, de 0,5 a menos de 1 quilate (medium) y 1 quilate o más (large). Hacer small como categoría de referencia. Añadir esta nueva variable al modelo existente, así como un término de interacción entre esta nueva variable y caratage.}
+
+
+\subsubsection{¿Es satisfactorio este modelo de regresión? ¿Se validan los supuestos estándar de la regresión lineal? ¿Son razonables las estimaciones numéricas?}
+
+El resultado del test Durbin Watson refleja un p-value de 0.02904, lo que significa que hay independencia en los residuos.
+
+El test Jarque Bera refleja un p.-value 2.2e-16 lo que significa que hay normalidad en los residuos.
+
+El test Breusch-Pagan refleja un p-value de 7.149e-15 lo que significa que hay homogeneidad en las varianzas.
+
+\subsubsection{Interpretar el parámetro de interacción med*carat. ¿Qué podemos inferir sobre el precio incremental del caratage en los 3 grupos?}
+
+Para diamantes small, el precio se incrementa en 884.554 por cada 0.1 unidades de caratage*
+Para diamantes medium, el precio se incrementa en 1251.772 por cada 0.1 unidades de caratage*
+Para diamantes large, el precio se incrementa en 1238.55 por cada unidad de caratage
+
+*Usamos 0.1 caratage como unidad de medida en vez de la 1 por que no tiene sentido hablar de como se incrementa el precio para los diamantes pequeños cada 1 caratage cuando el tamaño de los diamantes pequeños va de 0 a 0.5. Lo mismo pasa con los medianos.
+
+
+\subsubsection{¿Qué es más valorado: el color o la claridad? }
+El máximo valor de color es purityD y tiene un valor de 3180.57, mientras que el máximo valor de claridad es clarityIF y tiene un valor de 1751.03. Por lo tanto, tiene más valor la pureza de color.
+
+\subsubsection{Siendo todas las demás variables igual, ¿cuál es la diferencia de precio medio entre un diamante de grado D y otro de grado (a) I (b) E? }
+
+Un diamante de grado D tiene un valor medio de 3180.57, mientras que:
+a) Un diamante de grado I tiene un valor medio de -3265.59, Por lo que el diamante de grado D vale 6446.16 más que uno I
+b) Un diamante de grado E tiene un valor medio de 1932.54, por lo que un diamante de grado D vale 1248.03 que uno E.
+
+\subsubsection{Siendo todas las demás variables igual, ¿existen diferencias de precio entre las piedras evaluadas por el GIA, el IGI y el HRD? }
+
+Las evaluadas como GIA valen de media 15.21 más que el resto, las evaluadas IGI 397.34 menos que el resto y las HRD  3265.59 menos que el resto.
 
 \subsubsection{Añade el cuadrado de \texttt{caratage} como una nueva variable explicatoria.}
 
+\begin{figure}[h!]
+  \centering
+  \begin{subfigure}[b]{0.8\linewidth}
+    \includegraphics[width=\linewidth]{report/images/question-3/3b-summary.png}
+    \caption{Summary del modelo con la nueva variable carat^2}
+  \end{subfigure}
+  \label{fig:coffee}
+\end{figure}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -67,7 +120,20 @@ En primer lugar, representaremos las dos gráficas
 \subsection{¿Cuál de las acciones anteriores prefieres y por qué? Justifica la respuesta en términos de interpretabilidad y validez de los supuestos.}
 \label{subsec:question-4}
 
+En términos de validez, el modelo 2, que incluye el cuadrado de la variable caratage es preferible, ya que el p-value tras aplicar a ambos modelos el método anova tiene como resultado 1.162e-08, descartando la hipótesis nula, que en este caso sería el modelo 1, que es el que incluye la variable categorica de catarage.
 
+En términos de interpretabilidad, tiene sentido que el precio de un diamante se incremente exponencialmente con el valor de caratage (modelo 1), pero tiene menos sentido que, partiendo del modelo que ya teníamos, que incluía la variable caratage, añadiendo una variable categorica que represente umbrales de tamaño de esta variable (modelo 2) tenga algún impacto positivo en el modelo.
+
+Por lo tanto nos quedamos con el modelo que incluye el cuadrado del caratage.
+
+\begin{figure}[h!]
+  \centering
+  \begin{subfigure}[b]{0.8\linewidth}
+    \includegraphics[width=\linewidth]{report/images/question-4/anova-exercise4.png}
+    \caption{Anova model1 vs model2}
+  \end{subfigure}
+  \label{fig:coffee}
+\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{thebibliography}{9}
