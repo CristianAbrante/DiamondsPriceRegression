@@ -116,7 +116,12 @@ bptest(update1) # Variance
 
 # Interpret the interaction parameter med*carat. What can we infer on the
 # incremental pricing of caratage in the 3 clusters?
-## caratage:caratageCategoricalmedium  3672.18     896.59   4.096 5.46e-05 ***
+## caratage:caratageCategoricalmedium  3672.18
+## caratage:caratageCategoricallarge  -7606.99
+smallcaratinc <- 8845.54
+mediumcaratinc <- 8845.54 + 3672.18
+largecaratinc <- 8845.54 + -7606.99
+
 # For small diamonds, the incrising of caratage increments 884.554 each 0.1 of caratage
 # For medium diamonds, the incrising of caratage increments 367.218 each 0.1 of caratage
 # For large diamonds, the incrising of caratage increments -7606.99 each 1 of caratage
@@ -130,7 +135,8 @@ bptest(update1) # Variance
 ##purityD                             3180.57
 ##(Intercept) -> I                    -3265.59
 ##purityE                             1932.54
-
+difI <- 3180.57 - -3265.59
+difE <- 3180.57 - 1932.54
 # All other things being equal, are there price diferences amongst the stones
 # appraised by the GIA, IGI and HRD?
 ##certificateGIA                       15.21
