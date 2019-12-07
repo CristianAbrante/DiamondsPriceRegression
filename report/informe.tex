@@ -44,20 +44,35 @@ En primer lugar, representaremos ambas gráficas:
 
 \begin{figure}[h!]
   \centering
-  \begin{subfigure}[b]{0.4\linewidth}
+  \begin{subfigure}[b]{0.35\linewidth}
     \includegraphics[width=\linewidth]{report/images/question-1/price.png}
     \caption{\texttt{price} vs \texttt{caratage}}
   \end{subfigure}
-  \begin{subfigure}[b]{0.4\linewidth}
-    \includegraphics[width=\linewidth]{report/images/question-1/log(price).png}
+  \begin{subfigure}[b]{0.35\linewidth}
+    \includegraphics[width=\linewidth]{report/images/question-1/logprice.png}
     \caption{\texttt{log(price)} vs \texttt{caratage}}
   \end{subfigure}
   \caption{Gráficas para \texttt{price} y \texttt{caratage}}
   \label{fig:coffee}
 \end{figure}
 
-A simple vista, se puede apreciar que existe una relación lineal mucho mayor entre las variables \texttt{log(caratage)} y \texttt{price}, que entre \texttt{caratage} y \texttt{price}. Sin embargo, esto no es motivo suficiente para decantarnos por una variable u otra. Para determinar cual elegiremos finalmente se representará el histograma de ambas variables.
+A simple vista, se puede apreciar que existe una relación lineal mucho mayor entre las variables \texttt{log(caratage)} y \texttt{price}, que entre \texttt{caratage} y \texttt{price}. Sin embargo, esto no es motivo suficiente para decantarnos por una variable u otra. Para determinar cual elegiremos finalmente se representará el histograma de ambas.
 
+\begin{figure}[h!]
+  \centering
+  \begin{subfigure}[b]{0.35\linewidth}
+    \includegraphics[width=\linewidth]{report/images/question-1/histogram-price.png}
+    \caption{Histograma y representación de la densidad para la variable \texttt{price}}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.35\linewidth}
+    \includegraphics[width=\linewidth]{report/images/question-1/histogram-logprice.png}
+    \caption{Histograma y representación de la densidad para la variable \texttt{log(price)}}
+  \end{subfigure}
+  \caption{Histogramas para \texttt{price} y \texttt{caratage}}
+  \label{fig:coffee}
+\end{figure}
+
+En el histograma de la variable \texttt{price} se puede ver claramente una desviación (\textit{skewed}) hacia el lado izquierdo. Sin embargo, en la representación logarítmica de la variable, se puede observar que la distribución se aproxima más a una distribución normal. Aunque la normalidad de la variable independiente no es una suposición indispensable para llevar a cabo un modelo de regresión lineal, es preferible que nuestra variable de respuesta cumpla esta condición. Es por ello que para nuestro estudio utilizaremos la variable \textbf{log(price)}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %   Pregunta 2
