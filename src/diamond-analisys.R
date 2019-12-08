@@ -102,11 +102,18 @@ anova(general_model)
 #Check ResidualPlots
 residualPlots(general_model)
 
-# Normality of the residuals.
+#diagnostic plots
+par(mfrow=c(2, 2))
+plot(general_model, which=c(1 : 4), ask=F)
 
-# Constance variance of the residuals.
+# Normality of the residuals (Jarque Bera Test).
+jarque.bera.test(residuals(general_model))
 
-# Independence of the residual.
+# Constance variance of the residuals (Breusch-Pagan test).
+bptest(general_model)
+
+# Independence of the residuals (Durbin-Watson test).
+dwtest(general_model)
 
 ##########################################################################
 # Question 3
