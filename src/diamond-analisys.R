@@ -11,7 +11,7 @@ if (!require("ggplot2"))
   install.packages("ggplot2")
 if (!require("dplyr"))
   install.packages("dplyr")
-if (!require("ElemStatLearn"))
+if (!require("car"))
   install.packages("car")
 if (!require("lmtest"))
   install.packages("lmtest")
@@ -63,10 +63,14 @@ ggplot(aes(x = log(price)), data = diamonds) +
   geom_histogram(aes(y= ..density..), colour="black", fill="white") +
   geom_density(alpha = 0.2, fill="red")
 
+# Set log(price) as the response variable.
+diamonds <- diamonds %>% mutate(price = log(price))
+
 ##########################################################################
 # Question 2
 ##########################################################################
 
+# Set the factors with the specified reference level
 contrasts(diamonds$purity)
 diamonds <- diamonds %>%
   mutate(purity = relevel(purity, ref = "I"))
@@ -79,39 +83,30 @@ contrasts(diamonds$certificate)
 diamonds <- diamonds %>%
   mutate(certificate = relevel(certificate, ref = "HRD"))
 
-#create general model with all variables
-Full <- lm(
+# Create general model with all variables
+general_model <- lm(
   price ~ caratage + purity + clarity + certificate,
-  data = diamonds,
-  x = TRUE,
-  y = TRUE
+  data = diamonds
 )
-summary(Full)
-attributes(Full)
+attributes(general_model)
 
-#Drop out 'certificate' that has a high p-value.
-back1 = update(Full, . ~ . - certificate, diamonds)
-summary(back1)
+# We create the summary for the model fitted.
+summary(general_model)
 
-#Our final model is now stored at object back1, we rename it to lm.1
-lm.1 = back1
+# It is important to use the anova function in order to test
+# if categorical variables are relevant.
+anova(general_model)
 
-#Review model getted using an automated procedure for variable selection
-automated_model = step(object = Full,
-                       direction = "both",
-                       trace = FALSE)
-summary(automated_model)
-# where it has equaly drop the variable 'certificate'
-
-summary(lm.1)
-#confidence intervals for beta parameters
-confint(lm.1)
-
-# Why are these two tables different?
-anova(lm.1)
+### Analisys of the residual.
 
 #Check ResidualPlots
-residualPlots(lm.1)
+residualPlots(general_model)
+
+# Normality of the residuals.
+
+# Constance variance of the residuals.
+
+# Independence of the residual.
 
 ##########################################################################
 # Question 3
