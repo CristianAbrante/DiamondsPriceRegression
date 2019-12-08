@@ -2,7 +2,7 @@
 #-------------------------------------------------------------------
 #                  Statistical data analisys
 
-# Group: Ángel González, Álvaro Arranz, Cristian Abrante, Daniel Sanz
+# Group: Ángel González, Álvaro Arranz, Cristian Abrante, Daniel Saiz
 
 # - Prerequisites:
 # Install necesary packages if not currently installed.
@@ -114,6 +114,19 @@ bptest(general_model)
 
 # Independence of the residuals (Durbin-Watson test).
 dwtest(general_model)
+
+#diagnostic plots
+par ( mfrow=c ( 2 , 2 ) )
+plot ( lm.1 , which=c ( 1 : 4 ) , ask=F)
+
+#JB test
+jarque.bera.test(residuals(lm.1))
+
+#Breusch-Pagan test
+bptest(lm.1)
+
+#Durbin-Watson test
+dwtest(lm.1)
 
 ##########################################################################
 # Question 3
