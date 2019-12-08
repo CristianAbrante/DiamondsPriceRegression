@@ -9,6 +9,8 @@
 \usepackage{changepage}
 \usepackage{capt-of}
 \usepackage{wrapfig}
+\usepackage{listings}
+\usepackage{amsmath}
 
 \begin{document}
 
@@ -72,14 +74,71 @@ A simple vista, se puede apreciar que existe una relación lineal mucho mayor en
   \label{fig:coffee}
 \end{figure}
 
-En el histograma de la variable \texttt{price} se puede ver claramente una desviación (\textit{skewed}) hacia el lado izquierdo. Sin embargo, en la representación logarítmica de la variable, se puede observar que la distribución se aproxima más a una distribución normal. Aunque la normalidad de la variable independiente no es una suposición indispensable para llevar a cabo un modelo de regresión lineal, es preferible que nuestra variable de respuesta cumpla esta condición. Es por ello que para nuestro estudio utilizaremos la variable \textbf{log(price)}.
+En el histograma de la variable \texttt{price} se puede ver claramente una desviación (\textit{skewed}) hacia el lado izquierdo. Sin embargo, en la representación logarítmica de la variable, se puede observar que la distribución se aproxima más a una distribución normal. Aunque la normalidad de la variable independiente no es una suposición indispensable para llevar a cabo un modelo de regresión lineal, es preferible que nuestra variable de respuesta cumpla esta condición. Es por ello que para nuestro estudio utilizaremos la variable \textbf{log(price)}. \\
+
+Cabe destacar una desventaja de la elección de esta variable dependiente, y es la \textbf{interpretabilidad}. De manera general, el modelo que vamos a ajustar tendrá la siguiente forma:
+
+\begin{equation}
+    log(Y) = \alpha + \widehat{\beta}X + \epsilon
+\end{equation}
+
+Como todos los modelos lineales, un incremento de una unidad en la variable $x_i$ supondría un incremento de la variable de respuesta $log(Y)$ en $\beta_i$ unidades. Pero esto no resulta demasiado clarificador respecto a la variable $Y$, por tanto, deberemos utilizar las propiedades de los logaritmos para establecer estas dos interpretaciones:
+
+\begin{itemize}
+    \item Un incremento de una unidad en la variable $x_i$, se traduce en la multiplicación de la variable de respuesta $Y$ por $e^{\beta_i}$.
+    \item Para valores pequeños de $\beta_i$, se puede considerar que $e^{\beta_i} \approx 1 + \beta_i$ y de esta forma, interpretar la multiplicación como un incremento porcentual. Por ejemplo para $\beta_i = 0.05$, podemos decir que $e^{0.5} \approx 1.05$ y por tanto el incremento en la variable $Y$ será de un $5\%$ aproximadamente.
+\end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %   Pregunta 2
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Encuentra una manera adecuada de incluir, además de \texttt{caratage}, la otra información categórica disponible: \texttt{clarity}, \texttt{color} y \texttt{certificate}. Comenta el modelo que se ha ajustado, realizando un análisis básico de los residuos.}
+\subsection{Encuentra una manera adecuada de incluir, además de \texttt{caratage}, la otra información categórica disponible: \texttt{clarity}, \texttt{purity} y \texttt{certificate}. Comenta el modelo que se ha ajustado, realizando un análisis básico de los residuos.}
 \label{subsec:question-2}
 
+Para poder incluir la información de las variables categóricas disponibles se ha tenido que comprobar, en primer lugar, qué categoría aparecía de referencia en cada una de ellas. En este caso se han usado el peor nivel de \textit{purity} y de \textit{clarity}, que son “I” y “VS2”, respectivamente. En el caso del \textit{certificate} se ha establecido “HRD” como referencia.
+Una vez establecidas las categorías de referencia, se ha formado el modelo lineal con \textit{caratage} como variable numérica y el resto como variables categóricas, en el que se ha obtenido un estimador beta por cada categoría.
+
+\begin{figure}[h!]
+    \centering
+    \begin{tabular}{c}
+        \begin{lstlisting}[language=r]
+               Coefficients:
+                Estimate Std. Error t value Pr(>|t|)    
+(Intercept)     6.077239   0.048091 126.369  < 2e-16 ***
+caratage        2.855013   0.036968  77.230  < 2e-16 ***
+purityD         0.416557   0.041382  10.066  < 2e-16 ***
+purityE         0.387047   0.030824  12.557  < 2e-16 ***
+purityF         0.310198   0.027479  11.288  < 2e-16 ***
+purityG         0.210207   0.028359   7.412 1.32e-12 ***
+purityH         0.128681   0.028523   4.511 9.31e-06 ***
+clarityIF       0.298541   0.033303   8.964  < 2e-16 ***
+clarityVS1      0.096609   0.024919   3.877  0.00013 ***
+clarityVVS1     0.297835   0.028102  10.598  < 2e-16 ***
+clarityVVS2     0.201923   0.025344   7.967 3.56e-14 ***
+certificateGIA  0.008856   0.020864   0.424  0.67155    
+certificateIGI -0.173855   0.028673  -6.063 4.07e-09 *** 
+        \end{lstlisting}
+    \end{tabular}
+    \caption{Tabla que muestra el output para el modelo lineal que se ha ajustado}
+    \label{fig:summary_model}
+\end{figure}
+
+A la vista de los resultados de este primer modelo generado, se ha observado que el $p-valor$ de la variable "GIA" de  \textit{certificate} es de 0.67, con lo cual esta no es significativa. Como podemos ver, el precio se ve sustancialmente incrementado por un incremento unitario en el valor de los quilates. Seguidamente, cada uno de los valores de pureza se corresponde con un incremento porcentual que varía desde un 41\% de incremento del valor para el valor de pureza D hasta un 13\% para el valor H. Ocurre algo similar pero para el valor de claridad del color. En el caso en el que se tenga una certificación "IGI", el precio se reduce debido a que el signo del estimador es negativo. Esto puede ser indicativo de la menor reputación de esta institución respecto a la de referencia. \\
+
+Seguidamente se han realizado análisis para estudiar la normalidad, la varianza y la independencia de los residuos. Se han observado las gráficas de diagnóstico  y se han realizado tests para cada una de las propiedades que se quieren estudiar.
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[b]{0.5\linewidth}
+    \includegraphics[width=\linewidth]{report/images/question-2/Rplot.png}
+    \caption{Figura 4: Gráficas de diagnóstico del modelo lineal}
+  \end{subfigure}
+  \label{fig:coffee}
+\end{figure}
+
+En primer lugar estudiaremos la \textbf{normalidad} de los residuos. Para ello, se ha utilizado la prueba de \textit{Jarque Bera}. Obteniendo un un $p-valor$ de 0.01775. Esto nos permite rechazar la hipótesis nula, es decir que los residuos no son normales y existe un cierto patrón en ellos. Esto también se puede observar en la primera gráfica, en la que se puede ver que los residuos no siguen una distribución aleatoria y por tanto la linea roja no es horizontal y centrada en el 0. Para la \textbf{independencia de los residuos}, se ha utilizado el test de \textit{Durbin-Watson}, obteniendo un valor de 0.31 y un $p-valor$ de 2.2e-16, lo cual indica que no existe independencia entre los residuos. Finalmente utilizaremos el test de \textit{Breusch-Pagan} para comprobar la \textbf{igualdad de varianzas}, obteniendo un $p-valor$ de 4.265e-06. Esto nos indica que existen problemas de homoceidasticidad entre los residuos. \\
+
+Además, comprobaremos la existencia de outliers mediante la función \texttt{outlierTest}, la cual nos da como resultado que la observación 211 es un outlier. Al existir tampocos outliers, no podemos concluir que los errores en la normalidad se deban a ellos. Como podemos comprobar, ninguna de las suposiciones se cumplen con este modelo.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %   Pregunta 3
@@ -87,50 +146,129 @@ En el histograma de la variable \texttt{price} se puede ver claramente una desvi
 \subsection{Crea dos acciones para remediar el resultado anterior}
 \label{subsec:question-3}
 
-\subsubsection{Crear una nueva variable categórica para segregar las piedras según caratage: digamos menos de 0,5 quilates small, de 0,5 a menos de 1 quilate (medium) y 1 quilate o más (large). Hacer small como categoría de referencia. Añadir esta nueva variable al modelo existente, así como un término de interacción entre esta nueva variable y caratage.}
+\subsubsection{Crear una nueva variable categórica para segregar las piedras según caratage. Añadir esta nueva variable al modelo existente, así como un término de interacción entre esta nueva variable y caratage.}
+
+Para arreglar la situación anterior, hemos creado una variable categórica respecto al valor de \texttt{caratage}. Para crear esta variable (\texttt{caratageCategorical}), se ha seguido el siguiuente criterio:
+
+\begin{itemize}
+    \item Si el valor de la variable es inferior a 0.5 se considera una piedra pequeña y se asigna el valor \texttt{small}.
+    \item Si el \texttt{caratage} está entre 0.5 y 1.0 se considera un valor mediano y se asigna el valor \texttt{medium}.
+    \item Si el \texttt{caratage} es mayor que 1.0 se asigna el valor \texttt{large}.
+\end{itemize}
+
+Estableciendo este criterio, y añadiendo una variable de interacción entre el \texttt{caratage} numérico y el categórico, se ha ajustado este modelo, que podemos observar mediante la función \texttt{summary}.
+
+\begin{figure}[H]
+    \centering
+    \begin{tabular}{c}
+        \begin{lstlisting}[language=r]
+                                    Estimate Std. Error t value Pr(>|t|)    
+(Intercept)                         5.530676   0.032878 168.218  < 2e-16 ***
+caratage                            4.257150   0.085503  49.790  < 2e-16 ***
+purityD                             0.433562   0.016897  25.659  < 2e-16 ***
+purityE                             0.348679   0.012550  27.784  < 2e-16 ***
+purityF                             0.272843   0.011142  24.488  < 2e-16 ***
+purityG                             0.187887   0.011522  16.307  < 2e-16 ***
+purityH                             0.107866   0.011481   9.395  < 2e-16 ***
+clarityIF                           0.311385   0.013543  22.992  < 2e-16 ***
+clarityVS1                          0.068240   0.010060   6.783 6.56e-11 ***
+clarityVVS1                         0.213344   0.011536  18.493  < 2e-16 ***
+clarityVVS2                         0.134180   0.010351  12.963  < 2e-16 ***
+certificateGIA                      0.007703   0.008473   0.909    0.364    
+certificateIGI                     -0.016726   0.012177  -1.374    0.171    
+caratageCategoricalmedium           0.946026   0.039091  24.201  < 2e-16 ***
+caratageCategoricallarge            2.376272   0.319800   7.430 1.21e-12 ***
+caratage:caratageCategoricalmedium -1.765492   0.093498 -18.883  < 2e-16 ***
+caratage:caratageCategoricallarge  -3.259971   0.323445 -10.079  < 2e-16 ***
+        \end{lstlisting}
+    \end{tabular}
+    \caption{Tabla que muestra el output para el modelo lineal con \texttt{caratageCategorical}}
+    \label{fig:summary_model}
+\end{figure}
+
+Como podemos observar, en este modelo la variable categoríca \texttt{certificate} no tiene relevancia cuando la institución que concede el certificado es GIA e IGI, debido a los altos valores del $p-valor$.
 
 
 \subsubsection{¿Es satisfactorio este modelo de regresión? ¿Se validan los supuestos estándar de la regresión lineal? ¿Son razonables las estimaciones numéricas?}
 
-El resultado del test Durbin Watson refleja un p-value de 0.02904, lo que significa que hay independencia en los residuos.
+Para garantizar si es satisfactorio este modelo lineal, representaremos las gráficas de los residuos, y sobre ellas comprobaremos los supuestos del modelo de regresión.
 
-El test Jarque Bera refleja un p.-value 2.2e-16 lo que significa que hay normalidad en los residuos.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[scale=0.5]{report/images/question-3/question-1.png}
+    \caption{Residuals on model with categorical \texttt{caratage}}
+    \label{fig:my_label}
+\end{figure}
 
-El test Breusch-Pagan refleja un p-value de 7.149e-15 lo que significa que hay homogeneidad en las varianzas.
+En primer supuesto es la \textbf{relación lineal} entre las variables independientes y la variable respuesta. Para ello, nos fijaremos en la primera gráfica, que representa los residuos respecto a los valores predichos. Para que se cumpla la relación lineal, los residuos tienen que ser aleatorios y seguir una distribución normal, y por tanto la línea roja debe ser aproximadamente horizontal y centrada en el valor 0. Lo cual se cumple en comparación con el modelo del ejercicio anterior. \\
 
-\subsubsection{Interpretar el parámetro de interacción med*carat. ¿Qué podemos inferir sobre el precio incremental del caratage en los 3 grupos?}
+El segundo supuesto es la \textbf{independencia de los residuos}. Utilizamos el test de \textit{Durbin Watson}, para comprobar los valores. El resultado del test es de 1.03, con un $p-valor$ de 2.2e-16, lo cual nos indica que existe correlación entre los residuos y que por tanto no son independientes. Sin embargo, este valor es superior al 0.31 obtenido en el ejercicio anterior. \\
 
-Para diamantes small, el precio se incrementa en 884.554 por cada 0.1 unidades de caratage*
-Para diamantes medium, el precio se incrementa en 1251.772 por cada 0.1 unidades de caratage*
-Para diamantes large, el precio se incrementa en 1238.55 por cada unidad de caratage
+Seguidamente, comprobaremos la \textbf{normalidad de los residuos}. Esto se puede comprobar visualmente en la gráfica Normal QQ-Plot, pues los residuos siguen la recta y por tanto son normales. Para una comprobación numérica se utiliza el test \textit{jarque-Bera}, el cual nos da un $p-valor$ de 0.5111, lo que implica que existe normalidad en los residuos, pudiendo rechazar la hipótesis nula. \\
 
-*Usamos 0.1 caratage como unidad de medida en vez de la 1 por que no tiene sentido hablar de como se incrementa el precio para los diamantes pequeños cada 1 caratage cuando el tamaño de los diamantes pequeños va de 0 a 0.5. Lo mismo pasa con los medianos.
+Finalmente, comprobaremos la igualdad de las varianzas. En la imagen se corresponde con el tercer gráfico, el cual debería seguir de manera aproximada una linea recta horizontal, lo cual no se cumple. De manera numérica utilizamos el test de \textit{Breuch-Pagan}, el cual nos da un $p-valor$ de 4.117e-07, con lo cual podemos afirmar que existe un grado de homoceidasticidad en nuestros residuos.
 
+\subsubsection{Interpretar el parámetro de interacción. ¿Qué podemos inferir sobre el precio incremental del caratage en los 3 grupos?}
 
-\subsubsection{¿Qué es más valorado: el color o la claridad? }
-El máximo valor de color es purityD y tiene un valor de 3180.57, mientras que el máximo valor de claridad es clarityIF y tiene un valor de 1751.03. Por lo tanto, tiene más valor la pureza de color.
+En primer lugar, podemos comprobar que el parámetro de interacción es significativo, puesto que el $p-valor$ de ambos términos es menor a 0.05.  Para diamantes con valor \texttt{small}, al ser la variable de referencia todo el incremento se reune en el término \texttt{intercept}, además del propio valor añadido por \texttt{caratage}. Para el grupo \texttt{medium}, al incremento dado por \texttt{caratage}, tenemos que restarle -1.76. Aunque también tenemos que tener en cuenta lo que aporta la variable categórica al resultado. Finalmente, para el grupo \texttt{large}, se debe restar -3.25 al valor aportado por \texttt{caratage}. Aunque esto pueda parecer contradictorio, tiene sentido puesto que la existencia de la variable categórica está aportando a su vez un valor de 2.37 a la variable de respuesta.
 
-\subsubsection{Siendo todas las demás variables igual, ¿cuál es la diferencia de precio medio entre un diamante de grado D y otro de grado (a) I (b) E? }
+\subsubsection{¿Qué es más valorado: el color(\texttt{purity}) o la claridad \texttt{clarity}? }
 
-Un diamante de grado D tiene un valor medio de 3180.57, mientras que:
-a) Un diamante de grado I tiene un valor medio de -3265.59, Por lo que el diamante de grado D vale 6446.16 más que uno I
-b) Un diamante de grado E tiene un valor medio de 1932.54, por lo que un diamante de grado D vale 1248.03 que uno E.
+En términos absolutos, cuando se tiene la mejor categoría de pureza de color (D), se tiene un valor de 0.43, lo cual significa que se aumenta el precio del diamante en un 43\%. Por el contrario, en cuanto a la claridad (\texttt{clarity}), el mejor valor que se puede obtener (IF), aumenta el precio del diamante en un 31\%.  Con lo cual se puede determinar que el color es mucho mas valorado que la claridad.
 
-\subsubsection{Siendo todas las demás variables igual, ¿existen diferencias de precio entre las piedras evaluadas por el GIA, el IGI y el HRD? }
+\subsubsection{Siendo todas las demás variables iguales, ¿cuál es la diferencia de precio medio entre un diamante de grado D y otro de grado (a) I (b) E? }
 
-Las evaluadas como GIA valen de media 15.21 más que el resto, las evaluadas IGI 397.34 menos que el resto y las HRD  3265.59 menos que el resto.
+Cuando se tiene un grado de pureza D un diamante aumenta su valor en un 43\%. A diferencia de uno de tipo I, el cual al ser la variable de referencia, tiene solo su valor incluido en el término \texttt{Intercept}, con lo cual concluimos que el valor es un 43\% mayor. En comparación con un diamante de grado E, el cual aporta un 34\% al precio, podemos afirmar que uno de grado D tiene un valor un 9\% superior.
+
+\subsubsection{Siendo todas las demás variables iguales, ¿existen diferencias de precio entre las piedras evaluadas por el GIA, el IGI y el HRD? }
+
+Teniendo en cuenta el modelo que hemos ajustado, en el se puede comprobar que el certificado con valor GIA e IGI no es significativo, con lo cual realmente no existe una diferencia sustancial de precio, e incluso se debería eliminar del modelo. 
 
 \subsubsection{Añade el cuadrado de \texttt{caratage} como una nueva variable explicatoria.}
 
+Si añadimos el cuadrado de \texttt{caratage} como variable independiente, y realizamos el \texttt{summary} obtenemos el siguiente resultado:
+
 \begin{figure}[h!]
-  \centering
-  \begin{subfigure}[b]{0.8\linewidth}
-    \includegraphics[width=\linewidth]{report/images/question-3/3b-summary.png}
-    \caption{Summary del modelo con la nueva variable carat^2}
-  \end{subfigure}
-  \label{fig:coffee}
+    \centering
+    \begin{tabular}{c}
+        \begin{lstlisting}[language=r]
+                Estimate Std. Error t value Pr(>|t|)    
+(Intercept)     5.306339   0.029611 179.200  < 2e-16 ***
+caratage        5.670616   0.079284  71.523  < 2e-16 ***
+purityD         0.442606   0.017742  24.947  < 2e-16 ***
+purityE         0.363359   0.013220  27.485  < 2e-16 ***
+purityF         0.286615   0.011789  24.311  < 2e-16 ***
+purityG         0.197573   0.012153  16.257  < 2e-16 ***
+purityH         0.103508   0.012238   8.458 1.30e-15 ***
+clarityIF       0.320183   0.014279  22.424  < 2e-16 ***
+clarityVS1      0.075713   0.010690   7.083 1.05e-11 ***
+clarityVVS1     0.226174   0.012199  18.540  < 2e-16 ***
+clarityVVS2     0.143481   0.010976  13.072  < 2e-16 ***
+certificateGIA  0.006223   0.008938   0.696    0.487    
+certificateIGI -0.019190   0.013003  -1.476    0.141    
+I(caratage^2)  -2.102922   0.058022 -36.243  < 2e-16 ***
+        \end{lstlisting}
+    \end{tabular}
+    \caption{Tabla que muestra el output para el modelo lineal con \texttt{caratageCategorical}}
+    \label{fig:summary_model}
 \end{figure}
 
+Tal y como ocurría en el caso anterior, los valores de certificado pueden ser eliminados debido a que su $p-valor$ no es significante. Para comprobar si cumple las suposiciones del modelo, realizaremos las gráficas:
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[scale=0.5]{report/images/question-3/residuals-squared.png}
+    \caption{Residuals on model with categorical \texttt{caratage}}
+    \label{fig:my_label}
+\end{figure}
+
+Primero comprobaremos que existe una \textbf{relación lineal} entre los datos, para ello, observamos la primera gráfica, y teniendo en cuenta el caso anterior, si la linea roja es horizontal y se extiende a lo largo del valor 0 es indicativo de que existe una relación lineal entre las variables. \\
+
+En segundo lugar, comprobaremos la \textbf{independencia} de los residuos. Para ello utilizamos el test de \textit{Durbin Watson}, obteniendo un valor de 0.98 y un $p-valor$ de 2.2e-16. Con lo cual no podemos garantizar que existe independencia entre los residuos, y obteniendo un valor ligeramente peor que en el anterior modelo, pero mucho mejor que el modelo original que queremos arreglar.\\
+
+Luego, comprobaremos la \textbf{normalidad de los residuos}. Al igual que en el caso anterior, esto se comprueba en la gráfica QQ plot, en la que vemos que los residuos siguen la linea. También se utilizará el test de \textit{Jarque Bera}, para una comprobación numérica. Hemos obtenido un $p-valor$ de 0.14, con lo cual podemos rechazar la hipótesis de que los residuos no son normales.\\
+
+Finalmente, comprobaremos la \textbf{igualdad de varianzas}. Esto se puede ver en la tercera gráfica, mediante la línea roja. A su vez se ha utilizado el test de \textit{Breusch-Pagan}. En el hemos obtenido un $p-valor$ de 0.2441 lo cual nos permite rechazar la hipótesis de que existe homoceidasticidad en los residuos.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %   Pregunta 4
@@ -138,26 +276,21 @@ Las evaluadas como GIA valen de media 15.21 más que el resto, las evaluadas IGI
 \subsection{¿Cuál de las acciones anteriores prefieres y por qué? Justifica la respuesta en términos de interpretabilidad y validez de los supuestos.}
 \label{subsec:question-4}
 
-En términos de validez, el modelo 2, que incluye el cuadrado de la variable caratage es preferible, ya que el p-value tras aplicar a ambos modelos el método anova tiene como resultado 1.162e-08, descartando la hipótesis nula, que en este caso sería el modelo 1, que es el que incluye la variable categorica de catarage.
+En términos de validez de supuestos, hemos comprobado que la segunda aproximación es mucho más efectiva. En cuanto a la independencia de los residuos, hemos comprobado que ninguno de los modelos cumple esta condición, siendo el segundo modelo en cierta medida peor (con un resultado de 0.98 en el test de \textit{Durbin Watson}). En términos de normalidad de los residuos, hemos comprobado que ambos cumplen en esta condición. Finalmente, ha sido la suposición de igualdad de varianzas la que ha hecho que nos hayamos decantado por el segundo modelo, pues se ha demostrado que existe cierto grado de homoceidasticidad en los residuos del primer modelo (mediante el test de \textit{Breusch-Pagan}). \\
 
-En términos de interpretabilidad, tiene sentido que el precio de un diamante se incremente exponencialmente con el valor de caratage (modelo 1), pero tiene menos sentido que, partiendo del modelo que ya teníamos, que incluía la variable caratage, añadiendo una variable categorica que represente umbrales de tamaño de esta variable (modelo 2) tenga algún impacto positivo en el modelo.
+En términos de interpretabilidad, tiene sentido que el precio de un diamante se incremente exponencialmente con el valor de caratage (modelo 2), pero tiene menos sentido que, partiendo del modelo que ya teníamos, que incluía la variable caratage, añadiendo una variable categorica que represente umbrales de tamaño de esta variable (modelo 1) tenga algún impacto positivo en el modelo.\\
 
-Por lo tanto nos quedamos con el modelo que incluye el cuadrado del caratage.
-
-\begin{figure}[h!]
-  \centering
-  \begin{subfigure}[b]{0.8\linewidth}
-    \includegraphics[width=\linewidth]{report/images/question-4/anova-exercise4.png}
-    \caption{Anova model1 vs model2}
-  \end{subfigure}
-  \label{fig:coffee}
-\end{figure}
+Por ambos motivos, hemos decidido que la segunda aproximación es más acertada.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{thebibliography}{9}
-\bibitem{bortner1969short}
-    Journal of chronic diseases (Bortner, Rayman W)
-    \newblock {\em A short rating scale as a potential measure of pattern A behavior}, 1969.
+\bibitem{jarquebera}
+    Jarque, Carlos M., and Anil K. Bera
+    \newblock {\em Efficient tests for normality, homoscedasticity and serial independence of regression residuals}, 1980.
+    
+\bibitem{durbinwatson}
+    Durbin, James, and Geoffrey S. Watson
+    \newblock {\em Testing for serial correlation in least squares regression. II.}, 1951.
 
 \end{thebibliography}
 
