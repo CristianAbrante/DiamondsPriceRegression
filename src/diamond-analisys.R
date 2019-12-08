@@ -56,12 +56,12 @@ ggplot(aes(x = caratage, y = log(price)), data = diamonds) +
 # Representation of the histograms of price.
 
 ggplot(aes(x = price), data = diamonds) +
-  geom_histogram(aes(y= ..density..), colour="black", fill="white") +
-  geom_density(alpha = 0.2, fill="red")
+  geom_histogram(aes(y = ..density..), colour = "black", fill = "white") +
+  geom_density(alpha = 0.2, fill = "red")
 
 ggplot(aes(x = log(price)), data = diamonds) +
-  geom_histogram(aes(y= ..density..), colour="black", fill="white") +
-  geom_density(alpha = 0.2, fill="red")
+  geom_histogram(aes(y = ..density..), colour = "black", fill = "white") +
+  geom_density(alpha = 0.2, fill = "red")
 
 # Set log(price) as the response variable.
 diamonds <- diamonds %>% mutate(price = log(price))
@@ -103,8 +103,8 @@ anova(general_model)
 residualPlots(general_model)
 
 #diagnostic plots
-par(mfrow=c(2, 2))
-plot(general_model, which=c(1 : 4), ask=F)
+par(mfrow = c(2, 2))
+plot(general_model, which = c(1:4), ask = F)
 
 # Normality of the residuals (Jarque Bera Test).
 jarque.bera.test(residuals(general_model))
@@ -114,19 +114,6 @@ bptest(general_model)
 
 # Independence of the residuals (Durbin-Watson test).
 dwtest(general_model)
-
-#diagnostic plots
-par ( mfrow=c ( 2 , 2 ) )
-plot ( lm.1 , which=c ( 1 : 4 ) , ask=F)
-
-#JB test
-jarque.bera.test(residuals(lm.1))
-
-#Breusch-Pagan test
-bptest(lm.1)
-
-#Durbin-Watson test
-dwtest(lm.1)
 
 ##########################################################################
 # Question 3
@@ -158,7 +145,7 @@ bptest(update1) # Variance
 ## caratage:caratageCategoricallarge  -7606.99
 smallcaratinc <- 8845.54
 mediumcaratinc <- 8845.54 + 3672.18
-largecaratinc <- 8845.54+-7606.99
+largecaratinc <- 8845.54 + -7606.99
 
 # For small diamonds, the incrising of caratage increments 884.554 each 0.1 of caratage
 # For medium diamonds, the incrising of caratage increments 367.218 each 0.1 of caratage
@@ -173,7 +160,7 @@ largecaratinc <- 8845.54+-7606.99
 ##purityD                             3180.57
 ##(Intercept) -> I                    -3265.59
 ##purityE                             1932.54
-difI <- 3180.57--3265.59
+difI <- 3180.57 - -3265.59
 difE <- 3180.57 - 1932.54
 # All other things being equal, are there price diferences amongst the stones
 # appraised by the GIA, IGI and HRD?
