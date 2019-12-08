@@ -45,15 +45,23 @@ names(diamonds) <-
 # Question 1
 ##########################################################################
 
-ggplot(aes(x = price, y = caratage), data = diamonds) +
+# Representation of the scatterplots
+
+ggplot(aes(x = caratage, y = price), data = diamonds) +
   geom_point()
 
-ggplot(aes(x = price), data = diamonds) + geom_histogram()
-
-ggplot(aes(x = log(price), y = caratage), data = diamonds) +
+ggplot(aes(x = caratage, y = log(price)), data = diamonds) +
   geom_point()
 
-ggplot(aes(x = log(price)), data = diamonds) + geom_histogram() + geom_density(alpha=0.2)
+# Representation of the histograms of price.
+
+ggplot(aes(x = price), data = diamonds) +
+  geom_histogram(aes(y= ..density..), colour="black", fill="white") +
+  geom_density(alpha = 0.2, fill="red")
+
+ggplot(aes(x = log(price)), data = diamonds) +
+  geom_histogram(aes(y= ..density..), colour="black", fill="white") +
+  geom_density(alpha = 0.2, fill="red")
 
 ##########################################################################
 # Question 2
@@ -72,20 +80,26 @@ diamonds <- diamonds %>%
   mutate(certificate = relevel(certificate, ref = "HRD"))
 
 #create general model with all variables
-Full<-lm(price~caratage + purity + clarity + certificate, 
-         data=diamonds, x=TRUE, y=TRUE)
+Full <- lm(
+  price ~ caratage + purity + clarity + certificate,
+  data = diamonds,
+  x = TRUE,
+  y = TRUE
+)
 summary(Full)
 attributes(Full)
 
 #Drop out 'certificate' that has a high p-value.
-back1=update(Full,.~.-certificate, diamonds)
+back1 = update(Full, . ~ . - certificate, diamonds)
 summary(back1)
 
 #Our final model is now stored at object back1, we rename it to lm.1
-lm.1=back1
+lm.1 = back1
 
 #Review model getted using an automated procedure for variable selection
-automated_model=step(object=Full, direction="both", trace=FALSE)
+automated_model = step(object = Full,
+                       direction = "both",
+                       trace = FALSE)
 summary(automated_model)
 # where it has equaly drop the variable 'certificate'
 
@@ -105,16 +119,21 @@ residualPlots(lm.1)
 
 # 3.a
 
-diamonds$caratageCategorical <- ifelse(diamonds$caratage<0.5, "small", ifelse(diamonds$caratage<1, "medium", "large"))
+diamonds$caratageCategorical <-
+  ifelse(diamonds$caratage < 0.5,
+         "small",
+         ifelse(diamonds$caratage < 1, "medium", "large"))
 
-diamonds$caratageCategorical <- factor(diamonds$caratageCategorical, levels = c("small", "medium", "large"))
+diamonds$caratageCategorical <-
+  factor(diamonds$caratageCategorical,
+         levels = c("small", "medium", "large"))
 
-update1=update(Full,.~.+caratage*caratageCategorical, diamonds)
+update1 = update(Full, . ~ . + caratage * caratageCategorical, diamonds)
 summary(update1)
 
 # Is this regression model satisfactory? Are the standard assumptions of linear
 # regression validated? Are the numerical estimates sensible?
-dwtest( update1, alternative="two.sided") # for independence
+dwtest(update1, alternative = "two.sided") # for independence
 jarque.bera.test(residuals(update1)) # for normality
 bptest(update1) # Variance
 
@@ -124,13 +143,13 @@ bptest(update1) # Variance
 ## caratage:caratageCategoricallarge  -7606.99
 smallcaratinc <- 8845.54
 mediumcaratinc <- 8845.54 + 3672.18
-largecaratinc <- 8845.54 + -7606.99
+largecaratinc <- 8845.54+-7606.99
 
 # For small diamonds, the incrising of caratage increments 884.554 each 0.1 of caratage
 # For medium diamonds, the incrising of caratage increments 367.218 each 0.1 of caratage
 # For large diamonds, the incrising of caratage increments -7606.99 each 1 of caratage
 
-# Which is more highly valued: colour or clarity? 
+# Which is more highly valued: colour or clarity?
 ## purityD                             3180.57
 ## clarityIF                           1751.03
 
@@ -139,7 +158,7 @@ largecaratinc <- 8845.54 + -7606.99
 ##purityD                             3180.57
 ##(Intercept) -> I                    -3265.59
 ##purityE                             1932.54
-difI <- 3180.57 - -3265.59
+difI <- 3180.57--3265.59
 difE <- 3180.57 - 1932.54
 # All other things being equal, are there price diferences amongst the stones
 # appraised by the GIA, IGI and HRD?
@@ -149,7 +168,7 @@ difE <- 3180.57 - 1932.54
 
 
 #3.b Include the square of carat as a new explanatory variable. It avoids the subjectivity of clusters definition.
-update2=update(Full,.~.+I(caratage^2), diamonds)
+update2 = update(Full, . ~ . + I(caratage ^ 2), diamonds)
 summary(update2)
 
 ##########################################################################
@@ -157,12 +176,9 @@ summary(update2)
 ##########################################################################
 
 #Which of the two remedial actions do you prefer and why? Think on terms of interpretability and validity of the assumptions.
-anova(update1,update2)
+anova(update1, update2)
 
 # We prefer update2
-# Interpretability: It has more sense and is easier interpretable, that price increments exponentialy with the caratage than 
+# Interpretability: It has more sense and is easier interpretable, that price increments exponentialy with the caratage than
 # that adding the categorical version of caratage (when we already have the caratage) has repercusion in the price.
 # Validity : The P value is 1.162e-08 ***
-
-
-
