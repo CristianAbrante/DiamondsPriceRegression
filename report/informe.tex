@@ -1,4 +1,4 @@
-\documentclass[a4paper, 9pt]{article}
+\documentclass[a4paper, 7pt]{article}
 \usepackage{geometry}
 %% \input{configuracion}
 \usepackage[utf8]{inputenc}
@@ -46,11 +46,11 @@ En primer lugar, representaremos ambas gráficas:
 
 \begin{figure}[h!]
   \centering
-  \begin{subfigure}[b]{0.35\linewidth}
+  \begin{subfigure}[b]{0.25\linewidth}
     \includegraphics[width=\linewidth]{report/images/question-1/price.png}
     \caption{\texttt{price} vs \texttt{caratage}}
   \end{subfigure}
-  \begin{subfigure}[b]{0.35\linewidth}
+  \begin{subfigure}[b]{0.25\linewidth}
     \includegraphics[width=\linewidth]{report/images/question-1/logprice.png}
     \caption{\texttt{log(price)} vs \texttt{caratage}}
   \end{subfigure}
@@ -62,11 +62,11 @@ A simple vista, se puede apreciar que existe una relación lineal mucho mayor en
 
 \begin{figure}[h!]
   \centering
-  \begin{subfigure}[b]{0.35\linewidth}
+  \begin{subfigure}[b]{0.25\linewidth}
     \includegraphics[width=\linewidth]{report/images/question-1/histogram-price.png}
     \caption{Histograma y representación de la densidad para la variable \texttt{price}}
   \end{subfigure}
-  \begin{subfigure}[b]{0.35\linewidth}
+  \begin{subfigure}[b]{0.25\linewidth}
     \includegraphics[width=\linewidth]{report/images/question-1/histogram-logprice.png}
     \caption{Histograma y representación de la densidad para la variable \texttt{log(price)}}
   \end{subfigure}
@@ -101,7 +101,7 @@ Una vez establecidas las categorías de referencia, se ha formado el modelo line
 \begin{figure}[h!]
     \centering
     \begin{tabular}{c}
-        \begin{lstlisting}[language=r]
+        \begin{lstlisting}[basicstyle=\tiny, language=r]
                Coefficients:
                 Estimate Std. Error t value Pr(>|t|)    
 (Intercept)     6.077239   0.048091 126.369  < 2e-16 ***
@@ -123,9 +123,7 @@ certificateIGI -0.173855   0.028673  -6.063 4.07e-09 ***
     \label{fig:summary_model}
 \end{figure}
 
-A la vista de los resultados de este primer modelo generado, se ha observado que el $p-valor$ de la variable "GIA" de  \textit{certificate} es de 0.67, con lo cual esta no es significativa. Como podemos ver, el precio se ve sustancialmente incrementado por un incremento unitario en el valor de los quilates. Seguidamente, cada uno de los valores de pureza se corresponde con un incremento porcentual que varía desde un 41\% de incremento del valor para el valor de pureza D hasta un 13\% para el valor H. Ocurre algo similar pero para el valor de claridad del color. En el caso en el que se tenga una certificación "IGI", el precio se reduce debido a que el signo del estimador es negativo. Esto puede ser indicativo de la menor reputación de esta institución respecto a la de referencia. \\
-
-Seguidamente se han realizado análisis para estudiar la normalidad, la varianza y la independencia de los residuos. Se han observado las gráficas de diagnóstico  y se han realizado tests para cada una de las propiedades que se quieren estudiar.
+A la vista de los resultados de este primer modelo generado, se ha observado que el $p-valor$ de la variable "GIA" de  \textit{certificate} es de 0.67, con lo cual esta no es significativa. Como podemos ver, el precio se ve sustancialmente incrementado por un incremento unitario en el valor de los quilates. Seguidamente, cada uno de los valores de pureza se corresponde con un incremento porcentual que varía desde un 41\% de incremento del valor para el valor de pureza D hasta un 13\% para el valor H. Ocurre algo similar pero para el valor de claridad del color. En el caso en el que se tenga una certificación "IGI", el precio se reduce debido a que el signo del estimador es negativo. Esto puede ser indicativo de la menor reputación de esta institución respecto a la de referencia. Seguidamente se han realizado análisis para estudiar la normalidad, la varianza y la independencia de los residuos. Se han observado las gráficas de diagnóstico  y se han realizado tests para cada una de las propiedades que se quieren estudiar.
 
 \begin{figure}[H]
   \centering
@@ -136,7 +134,9 @@ Seguidamente se han realizado análisis para estudiar la normalidad, la varianza
   \label{fig:coffee}
 \end{figure}
 
-En primer lugar estudiaremos la \textbf{normalidad} de los residuos. Para ello, se ha utilizado la prueba de \textit{Jarque Bera}. Obteniendo un un $p-valor$ de 0.01775. Esto nos permite rechazar la hipótesis nula, es decir que los residuos no son normales y existe un cierto patrón en ellos. Esto también se puede observar en la primera gráfica, en la que se puede ver que los residuos no siguen una distribución aleatoria y por tanto la linea roja no es horizontal y centrada en el 0. Para la \textbf{independencia de los residuos}, se ha utilizado el test de \textit{Durbin-Watson}, obteniendo un valor de 0.31 y un $p-valor$ de 2.2e-16, lo cual indica que no existe independencia entre los residuos. Finalmente utilizaremos el test de \textit{Breusch-Pagan} para comprobar la \textbf{igualdad de varianzas}, obteniendo un $p-valor$ de 4.265e-06. Esto nos indica que existen problemas de homoceidasticidad entre los residuos. \\
+En primer lugar estudiaremos la \textbf{normalidad} de los residuos. Para ello, se ha utilizado la prueba de \textit{Jarque Bera} \cite{jarquebera}.\\
+
+Obteniendo un un $p-valor$ de 0.01775. Esto nos permite rechazar la hipótesis nula, es decir que los residuos no son normales y existe un cierto patrón en ellos. Esto también se puede observar en la primera gráfica, en la que se puede ver que los residuos no siguen una distribución aleatoria y por tanto la linea roja no es horizontal y centrada en el 0. Para la \textbf{independencia de los residuos}, se ha utilizado el test de \textit{Durbin-Watson}, obteniendo un valor de 0.31 y un $p-valor$ de 2.2e-16, lo cual indica que no existe independencia entre los residuos. Finalmente utilizaremos el test de \textit{Breusch-Pagan} para comprobar la \textbf{igualdad de varianzas}, obteniendo un $p-valor$ de 4.265e-06. Esto nos indica que existen problemas de homoceidasticidad entre los residuos. \\
 
 Además, comprobaremos la existencia de outliers mediante la función \texttt{outlierTest}, la cual nos da como resultado que la observación 211 es un outlier. Al existir tampocos outliers, no podemos concluir que los errores en la normalidad se deban a ellos. Como podemos comprobar, ninguna de las suposiciones se cumplen con este modelo.
 
@@ -161,7 +161,7 @@ Estableciendo este criterio, y añadiendo una variable de interacción entre el 
 \begin{figure}[H]
     \centering
     \begin{tabular}{c}
-        \begin{lstlisting}[language=r]
+        \begin{lstlisting}[basicstyle=\tiny, language=r]
                                     Estimate Std. Error t value Pr(>|t|)    
 (Intercept)                         5.530676   0.032878 168.218  < 2e-16 ***
 caratage                            4.257150   0.085503  49.790  < 2e-16 ***
@@ -191,7 +191,9 @@ Como podemos observar, en este modelo la variable categoríca \texttt{certificat
 
 \subsubsection{¿Es satisfactorio este modelo de regresión? ¿Se validan los supuestos estándar de la regresión lineal? ¿Son razonables las estimaciones numéricas?}
 
-Para garantizar si es satisfactorio este modelo lineal, representaremos las gráficas de los residuos, y sobre ellas comprobaremos los supuestos del modelo de regresión.
+Para garantizar si es satisfactorio este modelo lineal, representaremos las gráficas de los residuos, y sobre ellas comprobaremos los supuestos del modelo de regresión. En primer supuesto es la \textbf{relación lineal} entre las variables independientes y la variable respuesta. Para ello, nos fijaremos en la primera gráfica, que representa los residuos respecto a los valores predichos. Para que se cumpla la relación lineal, los residuos tienen que ser aleatorios y seguir una distribución normal, y por tanto la línea roja debe ser aproximadamente horizontal y centrada en el valor 0. Lo cual se cumple en comparación con el modelo del ejercicio anterior. El segundo supuesto es la \textbf{independencia de los residuos}. Utilizamos el test de \textit{Durbin Watson}, para comprobar los valores. El resultado del test es de 1.03, con un $p-valor$ de 2.2e-16, lo cual nos indica que existe correlación entre los residuos y que por tanto no son independientes. Sin embargo, este valor es superior al 0.31 obtenido en el ejercicio anterior. Seguidamente, comprobaremos la \textbf{normalidad de los residuos}. Esto se puede comprobar visualmente en la gráfica Normal QQ-Plot, pues los residuos siguen la recta y por tanto son normales. Para una comprobación numérica se utiliza el test \textit{jarque-Bera} \cite{jarquebera}, el cual nos da un $p-valor$ de 0.5111, lo que implica que existe normalidad en los residuos, pudiendo rechazar la hipótesis nula. \\
+
+Finalmente, comprobaremos la igualdad de las varianzas. En la imagen se corresponde con el tercer gráfico, el cual debería seguir de manera aproximada una linea recta horizontal, lo cual no se cumple. De manera numérica utilizamos el test de \textit{Breuch-Pagan}, el cual nos da un $p-valor$ de 4.117e-07, con lo cual podemos afirmar que existe un grado de homoceidasticidad en nuestros residuos.
 
 \begin{figure}[h!]
     \centering
@@ -199,14 +201,6 @@ Para garantizar si es satisfactorio este modelo lineal, representaremos las grá
     \caption{Residuals on model with categorical \texttt{caratage}}
     \label{fig:my_label}
 \end{figure}
-
-En primer supuesto es la \textbf{relación lineal} entre las variables independientes y la variable respuesta. Para ello, nos fijaremos en la primera gráfica, que representa los residuos respecto a los valores predichos. Para que se cumpla la relación lineal, los residuos tienen que ser aleatorios y seguir una distribución normal, y por tanto la línea roja debe ser aproximadamente horizontal y centrada en el valor 0. Lo cual se cumple en comparación con el modelo del ejercicio anterior. \\
-
-El segundo supuesto es la \textbf{independencia de los residuos}. Utilizamos el test de \textit{Durbin Watson}, para comprobar los valores. El resultado del test es de 1.03, con un $p-valor$ de 2.2e-16, lo cual nos indica que existe correlación entre los residuos y que por tanto no son independientes. Sin embargo, este valor es superior al 0.31 obtenido en el ejercicio anterior. \\
-
-Seguidamente, comprobaremos la \textbf{normalidad de los residuos}. Esto se puede comprobar visualmente en la gráfica Normal QQ-Plot, pues los residuos siguen la recta y por tanto son normales. Para una comprobación numérica se utiliza el test \textit{jarque-Bera}, el cual nos da un $p-valor$ de 0.5111, lo que implica que existe normalidad en los residuos, pudiendo rechazar la hipótesis nula. \\
-
-Finalmente, comprobaremos la igualdad de las varianzas. En la imagen se corresponde con el tercer gráfico, el cual debería seguir de manera aproximada una linea recta horizontal, lo cual no se cumple. De manera numérica utilizamos el test de \textit{Breuch-Pagan}, el cual nos da un $p-valor$ de 4.117e-07, con lo cual podemos afirmar que existe un grado de homoceidasticidad en nuestros residuos.
 
 \subsubsection{Interpretar el parámetro de interacción. ¿Qué podemos inferir sobre el precio incremental del caratage en los 3 grupos?}
 
@@ -226,12 +220,12 @@ Teniendo en cuenta el modelo que hemos ajustado, en el se puede comprobar que el
 
 \subsubsection{Añade el cuadrado de \texttt{caratage} como una nueva variable explicatoria.}
 
-Si añadimos el cuadrado de \texttt{caratage} como variable independiente, y realizamos el \texttt{summary} obtenemos el siguiente resultado:
+Si añadimos el cuadrado de \texttt{caratage} como variable independiente, y realizamos el \texttt{summary} obtenemos el resultado de la tabla \ref{fig:summary_model1}. Tal y como ocurría en el caso anterior, los valores de certificado pueden ser eliminados debido a que su $p-valor$ no es significante. Para comprobar si cumple las suposiciones del modelo, realizaremos las gráficas \ref{fig:my_label1}. Primero comprobaremos que existe una \textbf{relación lineal} entre los datos, para ello, observamos la primera gráfica, y teniendo en cuenta el caso anterior, si la linea roja es horizontal y se extiende a lo largo del valor 0 es indicativo de que existe una relación lineal entre las variables. En segundo lugar, comprobaremos la \textbf{independencia} de los residuos. Para ello utilizamos el test de \textit{Durbin Watson}, obteniendo un valor de 0.98 y un $p-valor$ de 2.2e-16. Con lo cual no podemos garantizar que existe independencia entre los residuos, y obteniendo un valor ligeramente peor que en el anterior modelo, pero mucho mejor que el modelo original que queremos arreglar.\\
 
 \begin{figure}[h!]
     \centering
     \begin{tabular}{c}
-        \begin{lstlisting}[language=r]
+        \begin{lstlisting}[basicstyle=\tiny, language=r]
                 Estimate Std. Error t value Pr(>|t|)    
 (Intercept)     5.306339   0.029611 179.200  < 2e-16 ***
 caratage        5.670616   0.079284  71.523  < 2e-16 ***
@@ -250,25 +244,17 @@ I(caratage^2)  -2.102922   0.058022 -36.243  < 2e-16 ***
         \end{lstlisting}
     \end{tabular}
     \caption{Tabla que muestra el output para el modelo lineal con \texttt{caratageCategorical}}
-    \label{fig:summary_model}
+    \label{fig:summary_model1}
 \end{figure}
-
-Tal y como ocurría en el caso anterior, los valores de certificado pueden ser eliminados debido a que su $p-valor$ no es significante. Para comprobar si cumple las suposiciones del modelo, realizaremos las gráficas:
 
 \begin{figure}[h!]
     \centering
     \includegraphics[scale=0.5]{report/images/question-3/residuals-squared.png}
     \caption{Residuals on model with categorical \texttt{caratage}}
-    \label{fig:my_label}
+    \label{fig:my_label1}
 \end{figure}
 
-Primero comprobaremos que existe una \textbf{relación lineal} entre los datos, para ello, observamos la primera gráfica, y teniendo en cuenta el caso anterior, si la linea roja es horizontal y se extiende a lo largo del valor 0 es indicativo de que existe una relación lineal entre las variables. \\
-
-En segundo lugar, comprobaremos la \textbf{independencia} de los residuos. Para ello utilizamos el test de \textit{Durbin Watson}, obteniendo un valor de 0.98 y un $p-valor$ de 2.2e-16. Con lo cual no podemos garantizar que existe independencia entre los residuos, y obteniendo un valor ligeramente peor que en el anterior modelo, pero mucho mejor que el modelo original que queremos arreglar.\\
-
-Luego, comprobaremos la \textbf{normalidad de los residuos}. Al igual que en el caso anterior, esto se comprueba en la gráfica QQ plot, en la que vemos que los residuos siguen la linea. También se utilizará el test de \textit{Jarque Bera}, para una comprobación numérica. Hemos obtenido un $p-valor$ de 0.14, con lo cual podemos rechazar la hipótesis de que los residuos no son normales.\\
-
-Finalmente, comprobaremos la \textbf{igualdad de varianzas}. Esto se puede ver en la tercera gráfica, mediante la línea roja. A su vez se ha utilizado el test de \textit{Breusch-Pagan}. En el hemos obtenido un $p-valor$ de 0.2441 lo cual nos permite rechazar la hipótesis de que existe homoceidasticidad en los residuos.
+Luego, comprobaremos la \textbf{normalidad de los residuos}. Al igual que en el caso anterior, esto se comprueba en la gráfica QQ plot, en la que vemos que los residuos siguen la linea. También se utilizará el test de \textit{Jarque Bera} \cite{jarquebera}, para una comprobación numérica. Hemos obtenido un $p-valor$ de 0.14, con lo cual podemos rechazar la hipótesis de que los residuos no son normales. Finalmente, comprobaremos la \textbf{igualdad de varianzas}. Esto se puede ver en la tercera gráfica, mediante la línea roja. A su vez se ha utilizado el test de \textit{Breusch-Pagan}. En el hemos obtenido un $p-valor$ de 0.2441 lo cual nos permite rechazar la hipótesis de que existe homoceidasticidad en los residuos.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %   Pregunta 4
@@ -276,9 +262,7 @@ Finalmente, comprobaremos la \textbf{igualdad de varianzas}. Esto se puede ver e
 \subsection{¿Cuál de las acciones anteriores prefieres y por qué? Justifica la respuesta en términos de interpretabilidad y validez de los supuestos.}
 \label{subsec:question-4}
 
-En términos de validez de supuestos, hemos comprobado que la segunda aproximación es mucho más efectiva. En cuanto a la independencia de los residuos, hemos comprobado que ninguno de los modelos cumple esta condición, siendo el segundo modelo en cierta medida peor (con un resultado de 0.98 en el test de \textit{Durbin Watson}). En términos de normalidad de los residuos, hemos comprobado que ambos cumplen en esta condición. Finalmente, ha sido la suposición de igualdad de varianzas la que ha hecho que nos hayamos decantado por el segundo modelo, pues se ha demostrado que existe cierto grado de homoceidasticidad en los residuos del primer modelo (mediante el test de \textit{Breusch-Pagan}). \\
-
-En términos de interpretabilidad, tiene sentido que el precio de un diamante se incremente exponencialmente con el valor de caratage (modelo 2), pero tiene menos sentido que, partiendo del modelo que ya teníamos, que incluía la variable caratage, añadiendo una variable categorica que represente umbrales de tamaño de esta variable (modelo 1) tenga algún impacto positivo en el modelo.\\
+En términos de validez de supuestos, hemos comprobado que la segunda aproximación es mucho más efectiva. En cuanto a la independencia de los residuos, hemos comprobado que ninguno de los modelos cumple esta condición, siendo el segundo modelo en cierta medida peor (con un resultado de 0.98 en el test de \textit{Durbin Watson}). En términos de normalidad de los residuos, hemos comprobado que ambos cumplen en esta condición. Finalmente, ha sido la suposición de igualdad de varianzas la que ha hecho que nos hayamos decantado por el segundo modelo, pues se ha demostrado que existe cierto grado de homoceidasticidad en los residuos del primer modelo (mediante el test de \textit{Breusch-Pagan}). En términos de interpretabilidad, tiene sentido que el precio de un diamante se incremente exponencialmente con el valor de caratage (modelo 2), pero tiene menos sentido que, partiendo del modelo que ya teníamos, que incluía la variable caratage, añadiendo una variable categorica que represente umbrales de tamaño de esta variable (modelo 1) tenga algún impacto positivo en el modelo.\\
 
 Por ambos motivos, hemos decidido que la segunda aproximación es más acertada.
 
@@ -295,6 +279,3 @@ Por ambos motivos, hemos decidido que la segunda aproximación es más acertada.
 \end{thebibliography}
 
 \end{document}
-
-
-
