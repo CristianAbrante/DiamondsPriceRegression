@@ -11,6 +11,7 @@ The objective of this exercises is the creation of different statistical models;
 
 ## Project structure
 
+- `assignment-1/`: Code and report of assignment 1, which consisted in the statistical analysis and description of the coronary heart disease dataset.
 - `assignment-2/`: Code and report of the assignment 2, which consisted in the creation of regression models for the prediction of diamonds price.
 
 ## Authors
