@@ -13,6 +13,7 @@ The objective of this exercises is the creation of different statistical models;
 
 - `assignment-1/`: Code and report of assignment 1, which consisted in the statistical analysis and description of the coronary heart disease dataset.
 - `assignment-2/`: Code and report of the assignment 2, which consisted in the creation of regression models for the prediction of diamonds price.
+- `assignment-3/`: Time series analysis and total credit of the non-financial private sector of the spanish national bank.
 
 ## Authors
 
